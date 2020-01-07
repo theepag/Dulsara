@@ -1,0 +1,5 @@
+funcdelete (int x) {
+
+			
+
+}

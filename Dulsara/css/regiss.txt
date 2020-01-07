@@ -1,0 +1,38 @@
+//error handlers
+	//check for empty fields
+	if (empty($fname) || empty($lname) ||empty($nic) || empty($email) || empty($mobile) || empty($username) || empty($pwd)) {
+		echo'<script>alert("required to fill!")</script>';
+		
+	}
+	else{
+		//check if input characters are valid
+		if (!preg_match("/^[a-zA-Z]*$/", $fname) || !preg_match("/^[a-zA-Z]*$/", $lname)) {
+			echo'<script>alert("Invalid data!")</script>';
+		}
+
+		else{
+		//check if email is valid
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			echo'<script>alert("Invalid email address")</script>';
+		}
+
+		else{
+		$sql = "select * from customer where username = '$username'";
+		$result = mysqli_query($conn, $sql);
+		$resultcheck = mysqli_num_rows($result);
+	
+		if ($resultcheck > 0) {
+			 echo'<script>alert("user name is already exists!")</script>';
+		}
+
+		else{
+			//hashing the password
+			$hashedPwd = password_hash($password, PASSWORD_DEFAULT);
+			//insert the user into the database
+			$sql = "INSERT INTO `customer`(`cus_fname`, `cus_lname`, `username`, `password`, `nic`, `country`, `mobile`, `email`) VALUES ('$fname', '$lname', '$username', '$pwd', '$nic', '$mobile', '$email');";
+			mysqli_query($conn, $sql);
+			 echo'<script>alert("your registration sucess!!!")</script>';
+		}
+	}
+}
+}
